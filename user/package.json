@@ -12,7 +12,7 @@
       "body-parser": "^1.18.1",
       "express": "^4.15.4",
       "mongodb": "^2.2.33",
-      "redis": "^2.8.0",
+      "redis": "^3.1.1",
       "instana-nodejs-sensor": "^1.28.0"
   }
 }
