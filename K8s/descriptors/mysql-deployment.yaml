@@ -25,7 +25,7 @@ spec:
         io.kompose.service: mysql
     spec:
       containers:
-      - image: linuxacademycontent/rs-mysql-db:latest
+      - image: amd64/mysql:latest
         name: mysql
         securityContext:
           capabilities:
