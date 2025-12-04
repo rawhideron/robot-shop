@@ -71,6 +71,13 @@ services:
       - NET_ADMIN
     networks:
       - robot-shop
+    env_file:
+      - .env
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     deploy:
       replicas: 1
       restart_policy:
