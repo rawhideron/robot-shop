@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    deployment.kubernetes.io/revision: "1"
+    kompose.cmd: kompose -f ../docker-compose.yaml convert
+    kompose.version: 1.10.0 (8bb0907)
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"apps/v1","kind":"Deployment","metadata":{"annotations":{"kompose.cmd":"kompose -f ../docker-compose.yaml convert","kompose.version":"1.10.0 (8bb0907)"},"creationTimestamp":null,"labels":{"io.kompose.service":"mysql"},"name":"mysql","namespace":"robot-shop"},"spec":{"replicas":1,"selector":{"matchLabels":{"io.kompose.service":"mysql"}},"strategy":{},"template":{"metadata":{"creationTimestamp":null,"labels":{"io.kompose.service":"mysql"}},"spec":{"containers":[{"image":"linuxacademycontent/rs-mysql-db:latest","name":"mysql","ports":[{"containerPort":3306}],"resources":{"limits":{"cpu":"200m","memory":"800Mi"},"requests":{"cpu":"100m","memory":"400Mi"}},"securityContext":{"capabilities":{"add":["NET_ADMIN"]}}}],"restartPolicy":"Always"}}},"status":{}}
+  creationTimestamp: null
+  labels:
+    io.kompose.service: mysql
+  name: mysql
+  namespace: robot-shop
+spec:
+  replicas: 1
+  strategy: {}
+  selector:
+    matchLabels:
+      io.kompose.service: mysql
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        io.kompose.service: mysql
+    spec:
+      containers:
+      - image: amd64/mysql:latest
+        name: mysql
+        env:
+          - name: MYSQL_ROOT_PASSWORD
+            value: "dynosoar"
+          - name: MYSQL_DATABASE
+            value: "cities"
+          - name: MYSQL_USER
+            value: "shipping"
+          - name: MYSQL_PASSWORD
+            value: "secret"
+        securityContext:
+          capabilities:
+            add: ["NET_ADMIN"]
+        ports:
+        - containerPort: 3306
+        resources:
+          limits:
+            cpu: 200m
+            memory: 800Mi
+          requests:
+            cpu: 100m
+            memory: 400Mi
+      restartPolicy: Always
+status: {}
