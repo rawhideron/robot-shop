@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: default-404
+  namespace: robot-shop
+  labels:
+    app: default-404
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: default-404
+  template:
+    metadata:
+      labels:
+        app: default-404
+    spec:
+      containers:
+        - name: default-404
+          image: nginx:alpine
+          ports:
+            - containerPort: 80
+          volumeMounts:
+            - name: nginx-conf
+              mountPath: /etc/nginx/conf.d
+      volumes:
+        - name: nginx-conf
+          configMap:
+            name: default-404-config
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: default-404-config
+  namespace: robot-shop
+data:
+  default.conf: |
+    server {
+      listen 80;
+      location / {
+        return 404 "404 - Resource not found\n";
+      }
+    }
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: default-404
+  namespace: robot-shop
+  labels:
+    app: default-404
+spec:
+  type: ClusterIP
+  selector:
+    app: default-404
+  ports:
+    - port: 80
+      targetPort: 80
+
