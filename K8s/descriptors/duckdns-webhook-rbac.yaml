@@ -1,0 +1,23 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: duckdns-webhook-secret-reader
+  namespace: robot-shop
+rules:
+  - apiGroups: [""]
+    resources: ["secrets"]
+    verbs: ["get"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: duckdns-webhook-secret-reader
+  namespace: robot-shop
+subjects:
+  - kind: ServiceAccount
+    name: cert-manager-webhook-duckdns
+    namespace: cert-manager
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: duckdns-webhook-secret-reader
