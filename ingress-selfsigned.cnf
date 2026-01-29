@@ -1,0 +1,19 @@
+[ req ]
+default_bits = 2048
+prompt = no
+default_md = sha256
+distinguished_name = dn
+x509_extensions = v3_ca
+
+[ dn ]
+CN = 98.109.165.132
+
+[ v3_ca ]
+subjectAltName = @alt_names
+basicConstraints = critical,CA:TRUE
+keyUsage = critical, keyCertSign, digitalSignature, keyEncipherment
+
+[ alt_names ]
+IP.1 = 98.109.165.132
+DNS.1 = demo-web.local
+DNS.2 = robot-shop.local

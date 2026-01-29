@@ -1,0 +1,67 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: invalid-page-html
+  namespace: robot-shop
+data:
+  index.html: |
+    <!doctype html>
+    <html lang="en">
+      <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Invalid Page</title>
+        <style>
+          body { font-family: Arial, sans-serif; margin: 2rem; }
+          h1 { color: #b00020; }
+        </style>
+      </head>
+      <body>
+        <h1>this is not a valid web page</h1>
+      </body>
+    </html>
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: invalid-page
+  namespace: robot-shop
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: invalid-page
+  template:
+    metadata:
+      labels:
+        app: invalid-page
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:alpine
+          ports:
+            - containerPort: 80
+          volumeMounts:
+            - name: invalid-page-html
+              mountPath: /usr/share/nginx/html/index.html
+              subPath: index.html
+              readOnly: true
+      volumes:
+        - name: invalid-page-html
+          configMap:
+            name: invalid-page-html
+            items:
+              - key: index.html
+                path: index.html
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: invalid-page
+  namespace: robot-shop
+spec:
+  selector:
+    app: invalid-page
+  ports:
+    - port: 80
+      targetPort: 80
