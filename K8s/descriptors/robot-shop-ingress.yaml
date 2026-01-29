@@ -9,9 +9,17 @@ spec:
     privateKeySecretRef:
       name: letsencrypt-prod-account-key
     solvers:
-      - http01:
-          ingress:
-            class: nginx
+      - selector:
+          dnsZones:
+            - duckdns.org
+        dns01:
+          webhook:
+            groupName: acme.duckdns.org
+            solverName: duckdns
+            config:
+              apiTokenSecretRef:
+                name: duckdns-api-token
+                key: token
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
@@ -64,13 +72,6 @@ spec:
                 name: web
                 port:
                   number: 8080
-          - path: /demo-web(/|$)(.*)
-            pathType: ImplementationSpecific
-            backend:
-              service:
-                name: demo-web
-                port:
-                  number: 8006
           - path: /css(/|$)(.*)
             pathType: ImplementationSpecific
             backend:
