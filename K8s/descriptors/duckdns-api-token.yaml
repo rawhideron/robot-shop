@@ -5,4 +5,4 @@ metadata:
   namespace: robot-shop
 type: Opaque
 stringData:
-  token: "<DUCKDNS_API_TOKEN>"
+  token: "1a776f26-cb65-4437-ba0f-a60887c83863"
