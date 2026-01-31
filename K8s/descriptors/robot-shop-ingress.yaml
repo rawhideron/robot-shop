@@ -49,6 +49,27 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
+  name: robot-shop-web-redirect
+  namespace: robot-shop
+  annotations:
+    nginx.ingress.kubernetes.io/permanent-redirect: /web/
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: rawhideron.duckdns.org
+      http:
+        paths:
+          - path: /web
+            pathType: Exact
+            backend:
+              service:
+                name: default-404
+                port:
+                  number: 80
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
   name: robot-shop-web
   namespace: robot-shop
   annotations:
