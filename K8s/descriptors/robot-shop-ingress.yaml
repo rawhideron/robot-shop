@@ -49,32 +49,11 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: robot-shop-web-redirect
-  namespace: robot-shop
-  annotations:
-    nginx.ingress.kubernetes.io/permanent-redirect: /web/
-spec:
-  ingressClassName: nginx
-  rules:
-    - host: rawhideron.duckdns.org
-      http:
-        paths:
-          - path: /web
-            pathType: Exact
-            backend:
-              service:
-                name: default-404
-                port:
-                  number: 80
----
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
   name: robot-shop-web
   namespace: robot-shop
   annotations:
     nginx.ingress.kubernetes.io/use-regex: "true"
-    nginx.ingress.kubernetes.io/rewrite-target: /$1
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
     cert-manager.io/cluster-issuer: letsencrypt-prod
 spec:
   ingressClassName: nginx
@@ -86,8 +65,54 @@ spec:
     - host: rawhideron.duckdns.org
       http:
         paths:
-          - path: /web/(.*)
+          - path: /web(/|$)(.*)
             pathType: ImplementationSpecific
+            backend:
+              service:
+                name: web
+                port:
+                  number: 8080
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: robot-shop-web-static
+  namespace: robot-shop
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - rawhideron.duckdns.org
+      secretName: robot-shop-tls
+  rules:
+    - host: rawhideron.duckdns.org
+      http:
+        paths:
+          - path: /css
+            pathType: Prefix
+            backend:
+              service:
+                name: web
+                port:
+                  number: 8080
+          - path: /js
+            pathType: Prefix
+            backend:
+              service:
+                name: web
+                port:
+                  number: 8080
+          - path: /media
+            pathType: Prefix
+            backend:
+              service:
+                name: web
+                port:
+                  number: 8080
+          - path: /fonts
+            pathType: Prefix
             backend:
               service:
                 name: web
