@@ -74,7 +74,7 @@ metadata:
   namespace: robot-shop
   annotations:
     nginx.ingress.kubernetes.io/use-regex: "true"
-    nginx.ingress.kubernetes.io/rewrite-target: /$2
+    nginx.ingress.kubernetes.io/rewrite-target: /$1
     cert-manager.io/cluster-issuer: letsencrypt-prod
 spec:
   ingressClassName: nginx
@@ -86,35 +86,7 @@ spec:
     - host: rawhideron.duckdns.org
       http:
         paths:
-          - path: /web(/|$)(.*)
-            pathType: ImplementationSpecific
-            backend:
-              service:
-                name: web
-                port:
-                  number: 8080
-          - path: /css(/|$)(.*)
-            pathType: ImplementationSpecific
-            backend:
-              service:
-                name: web
-                port:
-                  number: 8080
-          - path: /js(/|$)(.*)
-            pathType: ImplementationSpecific
-            backend:
-              service:
-                name: web
-                port:
-                  number: 8080
-          - path: /media(/|$)(.*)
-            pathType: ImplementationSpecific
-            backend:
-              service:
-                name: web
-                port:
-                  number: 8080
-          - path: /fonts(/|$)(.*)
+          - path: /web/(.*)
             pathType: ImplementationSpecific
             backend:
               service:
