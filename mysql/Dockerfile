@@ -1,4 +1,4 @@
-FROM mysql:sha256:fe036967257bf11aab7184e371920c5b629f0dd36cbefdf4ccd2ae18cc900dbd
+FROM mysql:8.0.34
 
 ENV MYSQL_DATABASE=cities \
     MYSQL_USER=shipping \
