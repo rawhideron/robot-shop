@@ -1,4 +1,4 @@
-FROM mysql:8.0.34
+FROM mysql:8.0.45
 
 ENV MYSQL_DATABASE=cities \
     MYSQL_USER=shipping \
